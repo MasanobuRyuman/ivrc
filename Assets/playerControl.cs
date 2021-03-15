@@ -56,5 +56,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 
         }
+
+        private void OnTriggerStay(Collider other){
+            if(other.tag == "enemy1"){
+                Debug.Log("enemy1");
+            }
+            if(other.tag == "enemy2"){
+                Debug.Log("enemy2");
+            }
+            if(other.tag == "enemy3"){
+                Debug.Log("enemy3");
+            }
+            if(other.tag == "enemy4"){
+                Debug.Log("enemy4");
+            }
+        }
     }
 }
