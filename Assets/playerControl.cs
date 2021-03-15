@@ -67,6 +67,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             if(other.tag == "enemy3"){
                 Debug.Log("enemy3");
             }
+            if(other.tag == "enemy4"){
+                Debug.Log("enemy4");
+            }
         }
     }
 }
