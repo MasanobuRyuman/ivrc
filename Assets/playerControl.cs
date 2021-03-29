@@ -13,10 +13,17 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private Vector3 m_Move;
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
         bool crouch;
+        int handshape;
+        GameObject gameloop;
+        gameloop gl;
 
         private void Start()
         {
             // get the transform of the main camera
+            gameloop = GameObject.Find("gameloop");
+            gl = gameloop.GetComponent<gameloop>();
+
+
             if (Camera.main != null)
             {
                 m_Cam = Camera.main.transform;
@@ -51,25 +58,55 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // calculate move direction to pass to character
 
             m_Move = new Vector3(0.0f,0.0f,0.7f);
-            Debug.Log(m_Move);
+            //Debug.Log(m_Move);
             m_Character.Move(m_Move, crouch, m_Jump);
 
 
         }
 
         private void OnTriggerStay(Collider other){
-            if(other.tag == "enemy1"){
-                Debug.Log("enemy1");
+            if(other.tag == "masuku"){
+                //Debug.Log("enemy1");
+                if(caution()==1){
+                    Debug.Log("masuku");
+                    gl.score += 1;
+                }
             }
-            if(other.tag == "enemy2"){
-                Debug.Log("enemy2");
+            if(other.tag == "release"){
+                //Debug.Log("enemy2");
+                if(caution()==2){
+                    Debug.Log("release");
+                    gl.score += 1;
+                }
             }
-            if(other.tag == "enemy3"){
-                Debug.Log("enemy3");
+            if(other.tag == "talk"){
+                //Debug.Log("enemy3");
+                if(caution()==3){
+                    Debug.Log("talk");
+                    gl.score += 1;
+                }
             }
             if(other.tag == "enemy4"){
-                Debug.Log("enemy4");
+                //Debug.Log("enemy4");
             }
         }
+
+        public int caution(){
+            if (Input.GetKeyDown(KeyCode.A)){
+                //Debug.Log("押している");
+                handshape=1;
+            }
+            if (Input.GetKeyDown(KeyCode.S)){
+                handshape=2;
+            }
+            if (Input.GetKeyDown(KeyCode.D)){
+                handshape=3;
+            }
+
+
+            return handshape;
+        }
+
+
     }
 }
