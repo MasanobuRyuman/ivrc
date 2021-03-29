@@ -51,7 +51,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             // calculate move direction to pass to character
 
             m_Move = new Vector3(0.0f,0.0f,-1.5f);
-            Debug.Log(m_Move);
+            //Debug.Log(m_Move);
             m_Character.Move(m_Move, crouch, m_Jump);
 
 
