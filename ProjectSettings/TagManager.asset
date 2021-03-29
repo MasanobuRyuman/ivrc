@@ -8,6 +8,9 @@ TagManager:
   - enemy2
   - enemy3
   - enemy4
+  - masuku
+  - release
+  - talk
   layers:
   - Default
   - TransparentFX
