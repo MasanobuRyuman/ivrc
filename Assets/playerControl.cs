@@ -92,15 +92,15 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         }
 
         public int caution(){
-            if (Input.GetKeyDown(KeyCode.A)){
+            if (Input.GetKeyUp(KeyCode.A)){
                 //Debug.Log("押している");
                 handshape=1;
-            }
-            if (Input.GetKeyDown(KeyCode.S)){
+            }else if (Input.GetKeyUp(KeyCode.S)){
                 handshape=2;
-            }
-            if (Input.GetKeyDown(KeyCode.D)){
+            }else if (Input.GetKeyUp(KeyCode.D)){
                 handshape=3;
+            }else {
+                handshape=0;
             }
 
 
