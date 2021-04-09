@@ -98,7 +98,7 @@ public class OVRSkeleton : MonoBehaviour
 	private GameObject _capsulesGO;
 
 	protected List<OVRBone> _bones;
-	private List<OVRBone> _bindPoses;
+	private List<OVRBone> _bindPoses
 	private List<OVRBoneCapsule> _capsules;
 
 	protected OVRPlugin.Skeleton2 _skeleton = new OVRPlugin.Skeleton2();
@@ -326,6 +326,8 @@ public class OVRSkeleton : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKey(KeyCode.Space)){
+		}
 #if UNITY_EDITOR
 		if (ShouldInitialize())
 		{
@@ -386,10 +388,12 @@ public class OVRSkeleton : MonoBehaviour
 				}
 			}
 		}
+
 	}
 
 	private void FixedUpdate()
 	{
+
 		if (!IsInitialized || _dataProvider == null)
 		{
 			IsDataValid = false;
@@ -436,8 +440,13 @@ public class OVRSkeleton : MonoBehaviour
 					}
 				}
 			}
+
 		}
+
+
 	}
+
+
 
 	public BoneId GetCurrentStartBoneId()
 	{
@@ -536,4 +545,3 @@ public class OVRBoneCapsule
 		CapsuleCollider = capsuleCollider;
 	}
 }
-
