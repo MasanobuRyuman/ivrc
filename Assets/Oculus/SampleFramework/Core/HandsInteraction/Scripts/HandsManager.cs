@@ -237,6 +237,7 @@ namespace OculusSampleFramework
 			SetToCurrentVisualMode();
 		}
 
+
 		public void SwitchVisualization()
 		{
 			if (!_leftSkeletonVisual || !_rightSkeletonVisual)
