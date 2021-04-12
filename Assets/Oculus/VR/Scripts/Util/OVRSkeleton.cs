@@ -98,7 +98,7 @@ public class OVRSkeleton : MonoBehaviour
 	private GameObject _capsulesGO;
 
 	protected List<OVRBone> _bones;
-	private List<OVRBone> _bindPoses;
+	private List<OVRBone> _bindPoses
 	private List<OVRBoneCapsule> _capsules;
 
 	protected OVRPlugin.Skeleton2 _skeleton = new OVRPlugin.Skeleton2();
@@ -175,7 +175,7 @@ public class OVRSkeleton : MonoBehaviour
 		}
 	}
 
-	protected virtual void Bones()
+	protected virtual void InitializeBones()
 	{
 		bool flipX = (_skeletonType == SkeletonType.HandLeft || _skeletonType == SkeletonType.HandRight);
 
