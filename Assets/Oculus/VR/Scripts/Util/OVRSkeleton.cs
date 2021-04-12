@@ -175,7 +175,7 @@ public class OVRSkeleton : MonoBehaviour
 		}
 	}
 
-	protected virtual void Bones()
+	protected virtual void InitializeBones()
 	{
 		bool flipX = (_skeletonType == SkeletonType.HandLeft || _skeletonType == SkeletonType.HandRight);
 
