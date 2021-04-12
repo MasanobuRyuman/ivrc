@@ -98,7 +98,7 @@ public class OVRSkeleton : MonoBehaviour
 	private GameObject _capsulesGO;
 
 	protected List<OVRBone> _bones;
-	private List<OVRBone> _bindPoses;
+	private List<OVRBone> _bindPoses
 	private List<OVRBoneCapsule> _capsules;
 
 	protected OVRPlugin.Skeleton2 _skeleton = new OVRPlugin.Skeleton2();
