@@ -743,7 +743,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	/// Allows overriding the internal mrc camera creation
 	/// </summary>
 	public InstantiateMrcCameraDelegate instantiateMixedRealityCameraGameObject = null;
-	
+
 	// OVRMixedRealityCaptureConfiguration Interface implementation
 	bool OVRMixedRealityCaptureConfiguration.enableMixedReality { get { return enableMixedReality; } set { enableMixedReality = value; } }
 	LayerMask OVRMixedRealityCaptureConfiguration.extraHiddenLayers { get { return extraHiddenLayers; } set { extraHiddenLayers = value; } }
@@ -985,7 +985,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.fixedFoveatedRenderingSupported)
 			{
-				Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
+				//Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
 			}
 			return (FixedFoveatedRenderingLevel)OVRPlugin.fixedFoveatedRenderingLevel;
 		}
@@ -993,7 +993,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.fixedFoveatedRenderingSupported)
 			{
-				Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
+				//Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
 			}
 			OVRPlugin.fixedFoveatedRenderingLevel = (OVRPlugin.FixedFoveatedRenderingLevel)value;
 		}
@@ -1009,7 +1009,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.fixedFoveatedRenderingSupported)
 			{
-				Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
+				//Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
 			}
 			return OVRPlugin.useDynamicFixedFoveatedRendering;
 		}
@@ -1017,7 +1017,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.fixedFoveatedRenderingSupported)
 			{
-				Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
+				//Debug.LogWarning("Fixed Foveated Rendering feature is not supported");
 			}
 			OVRPlugin.useDynamicFixedFoveatedRendering = value;
 		}
@@ -1039,7 +1039,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.tiledMultiResSupported)
 			{
-				Debug.LogWarning("Tiled-based Multi-resolution feature is not supported");
+				//Debug.LogWarning("Tiled-based Multi-resolution feature is not supported");
 			}
 			return (TiledMultiResLevel)OVRPlugin.tiledMultiResLevel;
 		}
@@ -1047,7 +1047,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.tiledMultiResSupported)
 			{
-				Debug.LogWarning("Tiled-based Multi-resolution feature is not supported");
+				//Debug.LogWarning("Tiled-based Multi-resolution feature is not supported");
 			}
 			OVRPlugin.tiledMultiResLevel = (OVRPlugin.TiledMultiResLevel)value;
 		}
@@ -1075,7 +1075,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			if (!OVRPlugin.gpuUtilSupported)
 			{
-				Debug.LogWarning("GPU Util is not supported");
+				//Debug.LogWarning("GPU Util is not supported");
 			}
 			return OVRPlugin.gpuUtilLevel;
 		}
@@ -1356,10 +1356,10 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		// uncomment the following line to disable the callstack printed to log
 		//Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);  // TEMPORARY
 
-		Debug.Log("Unity v" + Application.unityVersion + ", " +
-				"Oculus Utilities v" + OVRPlugin.wrapperVersion + ", " +
-				"OVRPlugin v" + OVRPlugin.version + ", " +
-				"SDK v" + OVRPlugin.nativeSDKVersion + ".");
+		//Debug.Log("Unity v" + Application.unityVersion + ", " +
+				//"Oculus Utilities v" + OVRPlugin.wrapperVersion + ", " +
+				//"OVRPlugin v" + OVRPlugin.version + ", " +
+				//"SDK v" + OVRPlugin.nativeSDKVersion + ".");
 
 		Debug.LogFormat("SystemHeadset {0}, API {1}", systemHeadsetType.ToString(), xrApi.ToString());
 
@@ -1443,7 +1443,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 
 			if (enableMixedReality)
 			{
-				Debug.Log("OVR: Mixed Reality mode enabled");
+				//Debug.Log("OVR: Mixed Reality mode enabled");
 				if (UseDirectCompositionFromCmd())
 				{
 					compositionMethod = CompositionMethod.Direct;
@@ -1452,7 +1452,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 				{
 					compositionMethod = CompositionMethod.External;
 				}
-				Debug.Log("OVR: CompositionMethod : " + compositionMethod);
+				//Debug.Log("OVR: CompositionMethod : " + compositionMethod);
 			}
 		}
 #endif
@@ -1690,7 +1690,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] HMDLost event");
+				//Debug.Log("[OVRManager] HMDLost event");
 				if (HMDLost != null)
 					HMDLost();
 			}
@@ -1704,7 +1704,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] HMDAcquired event");
+				//Debug.Log("[OVRManager] HMDAcquired event");
 				if (HMDAcquired != null)
 					HMDAcquired();
 			}
@@ -1738,7 +1738,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] HMDMounted event");
+				//Debug.Log("[OVRManager] HMDMounted event");
 				if (HMDMounted != null)
 					HMDMounted();
 			}
@@ -1758,13 +1758,13 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] VrFocusLost event");
+				//Debug.Log("[OVRManager] VrFocusLost event");
 				if (VrFocusLost != null)
 					VrFocusLost();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Debug.LogError("Caught Exception: " + e);
+				//Debug.LogError("Caught Exception: " + e);
 			}
 		}
 
@@ -1772,13 +1772,13 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] VrFocusAcquired event");
+				//Debug.Log("[OVRManager] VrFocusAcquired event");
 				if (VrFocusAcquired != null)
 					VrFocusAcquired();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Debug.LogError("Caught Exception: " + e);
+				//.LogError("Caught Exception: " + e);
 			}
 		}
 
@@ -1792,7 +1792,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] InputFocusLost event");
+				//Debug.Log("[OVRManager] InputFocusLost event");
 				if (InputFocusLost != null)
 					InputFocusLost();
 			}
@@ -1806,7 +1806,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] InputFocusAcquired event");
+				//Debug.Log("[OVRManager] InputFocusAcquired event");
 				if (InputFocusAcquired != null)
 					InputFocusAcquired();
 			}
@@ -1854,7 +1854,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] AudioOutChanged event");
+				//Debug.Log("[OVRManager] AudioOutChanged event");
 				if (AudioOutChanged != null)
 					AudioOutChanged();
 			}
@@ -1876,7 +1876,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] AudioInChanged event");
+				//Debug.Log("[OVRManager] AudioInChanged event");
 				if (AudioInChanged != null)
 					AudioInChanged();
 			}
@@ -1894,7 +1894,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] TrackingLost event");
+				//Debug.Log("[OVRManager] TrackingLost event");
 				if (TrackingLost != null)
 					TrackingLost();
 			}
@@ -1908,7 +1908,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		{
 			try
 			{
-				Debug.Log("[OVRManager] TrackingAcquired event");
+				//Debug.Log("[OVRManager] TrackingAcquired event");
 				if (TrackingAcquired != null)
 					TrackingAcquired();
 			}
@@ -1955,9 +1955,9 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	private static Camera FindMainCamera() {
 
 		Camera lastCamera;
-		if (lastFoundMainCamera != null && 
-		    lastFoundMainCamera.TryGetTarget(out lastCamera) && 
-		    lastCamera != null && 
+		if (lastFoundMainCamera != null &&
+		    lastFoundMainCamera.TryGetTarget(out lastCamera) &&
+		    lastCamera != null &&
 		    lastCamera.CompareTag("MainCamera"))
 		{
 			return lastCamera;
@@ -2005,7 +2005,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		}
 		else
 		{
-			Debug.Log("[OVRManager] unable to find a vaild camera");
+			//Debug.Log("[OVRManager] unable to find a vaild camera");
 		}
 		lastFoundMainCamera = new WeakReference<Camera>(result);
 		return result;
@@ -2032,7 +2032,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 
 	private void OnDestroy()
 	{
-		Debug.Log("[OVRManager] OnDestroy");
+		//Debug.Log("[OVRManager] OnDestroy");
 		OVRManagerinitialized = false;
 	}
 
@@ -2040,11 +2040,11 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	{
 		if (pause)
 		{
-			Debug.Log("[OVRManager] OnApplicationPause(true)");
+			//Debug.Log("[OVRManager] OnApplicationPause(true)");
 		}
 		else
 		{
-			Debug.Log("[OVRManager] OnApplicationPause(false)");
+			//Debug.Log("[OVRManager] OnApplicationPause(false)");
 		}
 	}
 
@@ -2052,17 +2052,17 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 	{
 		if (focus)
 		{
-			Debug.Log("[OVRManager] OnApplicationFocus(true)");
+			//Debug.Log("[OVRManager] OnApplicationFocus(true)");
 		}
 		else
 		{
-			Debug.Log("[OVRManager] OnApplicationFocus(false)");
+			//Debug.Log("[OVRManager] OnApplicationFocus(false)");
 		}
 	}
 
 	private void OnApplicationQuit()
 	{
-		Debug.Log("[OVRManager] OnApplicationQuit");
+		//Debug.Log("[OVRManager] OnApplicationQuit");
 	}
 
 #endregion // Unity Messages
@@ -2100,7 +2100,7 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 
 #if OVR_ANDROID_MRC
 			bool mediaInitialized = OVRPlugin.Media.Initialize();
-			Debug.Log(mediaInitialized ? "OVRPlugin.Media initialized" : "OVRPlugin.Media not initialized");
+			//Debug.Log(mediaInitialized ? "OVRPlugin.Media initialized" : "OVRPlugin.Media not initialized");
 			if (mediaInitialized)
 			{
 				var audioConfig = AudioSettings.GetConfiguration();
@@ -2159,12 +2159,12 @@ public class OVRManager : MonoBehaviour, OVRMixedRealityCaptureConfiguration
 		if (configuration.enableMixedReality && !staticPrevEnableMixedRealityCapture)
 		{
 			OVRPlugin.SendEvent("mixed_reality_capture", "activated");
-			Debug.Log("MixedRealityCapture: activate");
+			//Debug.Log("MixedRealityCapture: activate");
 		}
 
 		if (!configuration.enableMixedReality && staticPrevEnableMixedRealityCapture)
 		{
-			Debug.Log("MixedRealityCapture: deactivate");
+			//Debug.Log("MixedRealityCapture: deactivate");
 		}
 
 		if (configuration.enableMixedReality || staticPrevEnableMixedRealityCapture)

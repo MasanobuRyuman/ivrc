@@ -9,6 +9,8 @@ public class gameloop : MonoBehaviour
     public int score=0;
     GameObject hand;
     HandsManager skeleton;
+    GameObject finger;
+    OVRSkeletonRenderer fi;
 
 
     void Start()
