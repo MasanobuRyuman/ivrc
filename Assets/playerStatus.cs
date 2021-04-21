@@ -11,6 +11,8 @@ public class playerStatus : MonoBehaviour
     public GameObject leftHand;
     public GameObject rightHand;
     float leftFingerAngle;
+    float rightFingerAngle;
+    string sign;
 
 
     void Start()
@@ -108,15 +110,39 @@ public class playerStatus : MonoBehaviour
         var rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
         var rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
         var rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
-
+        //左手の人差し指と親指の
         var distance=(leftThumbTip-leftThumb2).normalized;
         var distance2=(leftIndexTip-leftThumb2).normalized;
+        //左手の指の角度
         leftFingerAngle=Vector3.Dot(distance,distance2);
         Debug.Log(leftFingerAngle);
 
+　　　　 //右手の人差し指と親指の角度の計算
+        var rightdistance=(rightThumbTip-rightThumb2).normalized;
+        var rightdistance2=(rightIndexTip-rightThumb2).normalized;
+        //右手の指の角度
+        rightFingerAngle=Vector3.Dot(rightdistance,rightdistance2);
+        Debug.Log(rightFingerAngle);
 
+        if (leftIndexTip.y >= leftThumbTip.y){
+            if (leftThumb2.x <rightThumb2.x & leftThumb2.y < rightThumb2.y){
+                sign="no";
+            }else{
+                sign="ok";
+            }
+        }
 
+        if (leftIndexTip.y <= leftThumbTip.y){
+            if (leftThumb2.x <rightThumb2.x & leftThumb2.y > rightThumb2.y){
+                sign="no";
+            }else{
+                sign="ok";
+            }
+        }
+        Debug.Log(sign);
     }
+
+
 
 
 
