@@ -12,8 +12,19 @@ public class playerStatus : MonoBehaviour
     public GameObject rightHand;
     float leftFingerAngle;
     float rightFingerAngle;
-    string sign;
+    string fingerAngle;
+    string leftIndexHorizontal;
+    string leftIndexVertical;
+    string rightIndexHorizontal;
+    string rightIndexVertical;
+    string leftIndexStatus;
+    string rightIndexStatus;
+    string indexStatus;
+    string handDistance;
 
+    string leftSign;
+    string rightSign;
+    string sign;
 
     void Start()
     {
@@ -107,9 +118,11 @@ public class playerStatus : MonoBehaviour
         var leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
         var leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
         var leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        var leftIndex1=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
         var rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
         var rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
         var rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        var rightIndex1=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
         //左手の人差し指と親指の
         var distance=(leftThumbTip-leftThumb2).normalized;
         var distance2=(leftIndexTip-leftThumb2).normalized;
@@ -124,22 +137,116 @@ public class playerStatus : MonoBehaviour
         rightFingerAngle=Vector3.Dot(rightdistance,rightdistance2);
         Debug.Log(rightFingerAngle);
 
+        if (0.5 >leftFingerAngle & 0.5 > rightFingerAngle ){
+            fingerAngle="True";
+        }else{
+            fingerAngle="Folse";
+        }
+
+
+
+    //片方の手が片方の指の間にはいっているかどうか
         if (leftIndexTip.y >= leftThumbTip.y){
-            if (leftThumb2.x <rightThumb2.x & leftThumb2.y < rightThumb2.y){
-                sign="no";
+            if (leftThumb2.x < rightThumb2.x & leftThumb2.y > rightThumb2.y){
+                leftSign="Ture";
             }else{
-                sign="ok";
+                leftSign="Folse";
             }
         }
 
         if (leftIndexTip.y <= leftThumbTip.y){
-            if (leftThumb2.x <rightThumb2.x & leftThumb2.y > rightThumb2.y){
-                sign="no";
+            if (leftThumb2.x <rightThumb2.x & leftThumb2.y < rightThumb2.y){
+                rightSign="True";
             }else{
-                sign="ok";
+                rightSign="Folse";
             }
         }
-        Debug.Log(sign);
+        //両方の手が片方の手の中にはいっているか
+        if (leftSign=="True" & rightSign=="True"){
+            sign="True";
+        }else{
+            sign="Folse";
+        }
+
+
+        //ひとさし指か親指が垂直かどうか
+        //左手の人差し指が水平かどうか
+        var leftIndexHorizontalValue=Mathf.Abs((leftIndexTip.y-leftIndex1.y)*100);
+        if (2 >= leftIndexHorizontalValue){
+            leftIndexHorizontal="True";
+        }else{
+            leftIndexHorizontal="Folse";
+        }
+
+        //左手の人差し指が垂直かどうか
+        var leftIndexVerticalValue=Mathf.Abs((leftIndexTip.x=leftIndex1.x)*100);
+        if (2 >= leftIndexVerticalValue){
+            leftIndexVertical="True";
+        }else{
+            leftIndexVertical="Folse";
+        }
+
+        //右手のひとさし指が水平かどうか
+        var rightIndexHorizontalValue=Mathf.Abs((rightIndexTip.y-rightIndex1.y)*100);
+        if (2 >= rightIndexHorizontalValue){
+            rightIndexHorizontal="True";
+        }else{
+            rightIndexHorizontal="Folse";
+        }
+
+        var rightIndexVerticalValue=Mathf.Abs((rightIndexTip.x-rightIndex1.x)*100);
+        if (2 >= rightIndexVerticalValue){
+            rightIndexVertical="True";
+        }else{
+            rightIndexHorizontal="Folse";
+        }
+        //左手のひと差し指が正しいか
+        if(leftThumbTip.y > leftIndexTip.y & leftIndexHorizontal=="True"){
+            leftIndexStatus="True";
+        }else if(leftIndexTip.y > leftThumbTip.y & leftIndexVertical=="True"){
+            leftIndexStatus="True";
+        }else{
+            leftIndexStatus="Folse";
+        }
+
+        //右手の人差し指が正しいか
+        if(rightIndexTip.y > rightThumbTip.y & rightIndexHorizontal=="True"){
+            rightIndexStatus="True";
+        }else if(rightThumbTip.y > rightIndexTip.y & rightIndexVertical=="True"){
+            rightIndexStatus="True";
+        }else{
+            rightIndexStatus="Folse";
+        }
+
+        //人差し指が正しいかどうか
+        if (leftIndexStatus=="True" & rightIndexStatus=="True"){
+            indexStatus="True";
+        }else{
+            indexStatus="Folse";
+        }
+
+        if (leftThumb2.y > rightThumb2.y & 5 > leftThumb2.y / rightThumb2.y ){
+            handDistance="True";
+        }else if(rightThumb2.y > leftThumb2.y & 5 > rightThumb2.y / leftThumb2.y){
+            handDistance="True";
+        }else{
+            handDistance="Folse";
+        }
+
+        //マスクができているか
+        if (fingerAngle=="True" & sign=="True" & indexStatus=="True" & handDistance=="True"){
+
+        }
+
+
+
+
+
+
+
+
+
+
     }
 
 
