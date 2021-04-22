@@ -21,6 +21,8 @@ public class playerStatus : MonoBehaviour
     string leftIndexStatus;
     string rightIndexStatus;
     string indexStatus;
+    string handDistance1;
+    string handDistance2;
     string handDistance;
 
     string leftpattern1;
@@ -44,7 +46,7 @@ public class playerStatus : MonoBehaviour
         if (Input.GetKey(KeyCode.A)){
             masuku();
         }
-        
+
 
 
     }
@@ -99,6 +101,7 @@ public class playerStatus : MonoBehaviour
         var isRingStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
         var isPinkyStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Pinky0, OVRSkeleton.BoneId.Hand_Pinky1, OVRSkeleton.BoneId.Hand_Pinky2, OVRSkeleton.BoneId.Hand_Pinky3, OVRSkeleton.BoneId.Hand_PinkyTip);
 
+        //指の曲げ伸ばしはあっているか
         if(isThumbStraight && isIndexStraight && !isMiddleStraight  && !isRingStraight  && !isPinkyStraight ){ //人差し指だけまっすぐで、その他が曲がっている
             extend="True";
         }else{
@@ -171,9 +174,6 @@ public class playerStatus : MonoBehaviour
         }
 
 
-        //左手のひと差し指が正しいか
-
-
         //片方の手がもう片方のなかにいる
         if (leftIndexHorizontal=="True" & leftThumbTip.y>leftIndexTip.y ||leftIndexVertical=="True" & leftIndexTip.y > leftThumbTip.y ){
             if(rightThumb2.x>leftThumb2.x & rightThumb2.y > leftThumb2.y){
@@ -234,14 +234,32 @@ public class playerStatus : MonoBehaviour
 
 
 
-
+        //手は離れすぎていないか
         if (leftThumb2.y > rightThumb2.y & 5 > leftThumb2.y / rightThumb2.y ){
-            handDistance="True";
+            handDistance1="True";
         }else if(rightThumb2.y > leftThumb2.y & 5 > rightThumb2.y / leftThumb2.y){
+            handDistance1="True";
+        }else{
+            handDistance1="Folse";
+        }
+
+        if (leftThumb2.x > rightThumb2.x & 5 > leftThumb2.x / rightThumb2.x ){
+            handDistance2="True";
+        }else if(rightThumb2.x > leftThumb2.x & 5 > rightThumb2.x / leftThumb2.x){
+            handDistance2="True";
+        }else{
+            handDistance2="Folse";
+        }
+
+        if(handDistance1=="True" & handDistance2=="True"){
             handDistance="True";
         }else{
             handDistance="Folse";
         }
+
+
+
+
 
         //マスクができているか
         if (extend=="True" & fingerAngle=="True" & pattern=="True" & handDistance=="True"){
@@ -254,15 +272,6 @@ public class playerStatus : MonoBehaviour
         Debug.Log("片方の手に入っているか"+pattern);
         Debug.Log("てのきょり"+handDistance);
         Debug.Log(msk);
-
-
-
-
-
-
-
-
-
 
     }
 
