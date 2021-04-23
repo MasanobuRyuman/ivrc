@@ -34,17 +34,48 @@ public class playerStatus : MonoBehaviour
     string pattern;
     string msk;
 
+    Vector3 leftThumbTip;
+    Vector3 leftThumb2;
+    Vector3 leftIndexTip;
+    Vector3 leftIndex1;
+    Vector3 rightThumbTip;
+    Vector3 rightThumb2;
+    Vector3 rightIndexTip;
+    Vector3 rightIndex1;
+
+    float time;
+
+
+    List<Vector3> rightleave=new List<Vector3>();
+    List<Vector3> leftleave=new List<Vector3>();
+
     void Start()
     {
         _skeleton=leftHand.GetComponent<OVRSkeleton>();
         righthand=rightHand.GetComponent<OVRSkeleton>();
+        StartCoroutine("measure");
     }
 
     // Update is called once per frame
     void Update()
     {
+        leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
+        leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
+        leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        leftIndex1=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+        rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
+        rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
+        rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        rightIndex1=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+
+
+        time=Time.deltaTime;
         if (Input.GetKey(KeyCode.A)){
             masuku();
+        }
+
+        if (Input.GetKey(KeyCode.S)){
+            leave();
         }
 
 
@@ -110,14 +141,6 @@ public class playerStatus : MonoBehaviour
 
 
 
-        var leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
-        var leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
-        var leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
-        var leftIndex1=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
-        var rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
-        var rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
-        var rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
-        var rightIndex1=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
         //左手の人差し指と親指の
         var distance=(leftThumbTip-leftThumb2).normalized;
         var distance2=(leftIndexTip-leftThumb2).normalized;
@@ -264,6 +287,60 @@ public class playerStatus : MonoBehaviour
         Debug.Log("てのきょり"+handDistance);
         Debug.Log(msk);
 
+    }
+    IEnumerator measure(){
+        rightleave.Add(rightThumb2);
+        leftleave.Add(leftThumb2);
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine("measure");
+    }
+
+    public void leave(){
+
+        var rightminimum=1000000000.0;
+        var rightmaximum=0.0;
+        var leftminimun=1000000.0;
+        var leftmaxium=0.0;
+        var rightLeaveJudgment="Folse";
+        var leftLeaveJudgment="Folse";
+        if (rightleave.Count > 10 & leftleave.Count > 10){
+            foreach(Vector3 i in rightleave){
+                Debug.Log(i.x);
+                if(rightminimum > i.x){
+                    rightminimum=i.x;
+                }
+                if(i.x > rightmaximum){
+                    rightmaximum=i.x;
+                }
+            }
+
+            foreach(Vector3 u in leftleave){
+                if(leftminimun > u.x){
+                    leftminimun=u.x;
+                }
+                if(u.x>leftmaxium){
+                    leftmaxium=u.x;
+                }
+            }
+            if (rightmaximum - rightminimum > 0.1){
+                rightLeaveJudgment="True";
+            }else{
+                rightLeaveJudgment="Folse";
+            }
+            if (leftmaxium - leftminimun > 0.1 ){
+                leftLeaveJudgment="True";
+            }else{
+                leftLeaveJudgment="Folse";
+            }
+
+            if (leftLeaveJudgment=="True" & rightLeaveJudgment=="True"){
+                Debug.Log("True");
+            }else{
+                Debug.Log("Folse");
+            }
+            rightleave.Clear();
+            leftleave.Clear();
+        }
     }
 
 
