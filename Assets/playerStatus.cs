@@ -235,29 +235,20 @@ public class playerStatus : MonoBehaviour
 
 
         //手は離れすぎていないか
-        if (leftThumb2.y > rightThumb2.y & 5 > leftThumb2.y / rightThumb2.y ){
-            handDistance1="True";
-        }else if(rightThumb2.y > leftThumb2.y & 5 > rightThumb2.y / leftThumb2.y){
-            handDistance1="True";
-        }else{
-            handDistance1="Folse";
-        }
+        float xdistance=Mathf.Abs(leftThumb2.x-rightThumb2.x);
+        float ydistance=Mathf.Abs(leftThumb2.y-rightThumb2.y);
+        Debug.Log("xdistance"+xdistance);
+        Debug.Log("ydistance"+ydistance);
+        if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
+            if(0.3 > ydistance){
+                handDistance="True";
+            }else{
+                handDistance="Folse";
+            }
 
-        if (leftThumb2.x > rightThumb2.x & 5 > leftThumb2.x / rightThumb2.x ){
-            handDistance2="True";
-        }else if(rightThumb2.x > leftThumb2.x & 5 > rightThumb2.x / leftThumb2.x){
-            handDistance2="True";
-        }else{
-            handDistance2="Folse";
-        }
-
-        if(handDistance1=="True" & handDistance2=="True"){
-            handDistance="True";
         }else{
             handDistance="Folse";
         }
-
-
 
 
 
