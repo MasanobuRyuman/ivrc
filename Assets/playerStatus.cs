@@ -33,21 +33,154 @@ public class playerStatus : MonoBehaviour
     string pattern2;
     string pattern;
     string msk;
+    string leaveStatus;
+
+    Vector3 leftThumbTip;
+    Vector3 leftThumb2;
+    Vector3 leftIndexTip;
+    Vector3 leftIndex1;
+    Vector3 rightThumbTip;
+    Vector3 rightThumb2;
+    Vector3 rightIndexTip;
+    Vector3 rightIndex1;
+
+    float leftminimum;
+    float leftmaxium;
+    float rightminimum;
+    float rightmaximum;
+
+    float time;
+
+    bool isThumbStraight;
+    bool isIndexStraight;
+    bool isMiddleStraight;
+    bool isRingStraight;
+    bool isPinkyStraight;
+
+    bool rightisThumbStraight;
+    bool rightisIndexStraight;
+    bool rightisMiddleStraight;
+    bool rightisRingStraight;
+    bool rightisPinkyStraight;
+
+    string stright;
+
+    string leftIndexTilt;
+    string leftThumbTilt;
+    string rightIndexTilt;
+    string rightThumbTilt;
+
+    string quietStatus;
+
+
+    List<Vector3> rightleave=new List<Vector3>();
+    List<Vector3> leftleave=new List<Vector3>();
 
     void Start()
     {
         _skeleton=leftHand.GetComponent<OVRSkeleton>();
         righthand=rightHand.GetComponent<OVRSkeleton>();
+        StartCoroutine("leave");
     }
 
     // Update is called once per frame
     void Update()
     {
+        leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
+        leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
+        leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        leftIndex1=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+        rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
+        rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
+        rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+        rightIndex1=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
+
+
+        time=Time.deltaTime;
         if (Input.GetKey(KeyCode.A)){
             masuku();
         }
 
+        if (Input.GetKey(KeyCode.S)){
+            leave();
+        }
 
+        if (Input.GetKey(KeyCode.G)){
+            quiet();
+        }
+        //ひとさし指か親指が垂直かどうか
+        //左手の人差し指が水平かどうか
+        var leftIndexHorizontalValue=Mathf.Abs(leftIndexTip.y-leftIndex1.y);
+        if (0.03 >= leftIndexHorizontalValue){
+            leftIndexHorizontal="True";
+        }else{
+            leftIndexHorizontal="Folse";
+        }
+
+        //左手の人差し指が垂直かどうか
+        var leftIndexVerticalValue=Mathf.Abs(leftIndexTip.x-leftIndex1.x);
+        if (0.03 >= leftIndexVerticalValue){
+            leftIndexVertical="True";
+        }else{
+            leftIndexVertical="Folse";
+        }
+
+        //右手のひとさし指が水平かどうか
+        var rightIndexHorizontalValue=Mathf.Abs(rightIndexTip.y-rightIndex1.y);
+        if (0.03 >= rightIndexHorizontalValue){
+            rightIndexHorizontal="True";
+        }else{
+            rightIndexHorizontal="Folse";
+        }
+
+        //右手の人差し指が垂直かどうか
+        var rightIndexVerticalValue=Mathf.Abs(rightIndexTip.x-rightIndex1.x);
+        if (0.03 >= rightIndexVerticalValue){
+            rightIndexVertical="True";
+        }else{
+            rightIndexVertical="Folse";
+        }
+
+        //左手の人差し指が傾いていないか
+        if (0.03 > Mathf.Abs(leftIndexTip.z-leftIndex1.z)){
+            leftIndexTilt="True";
+        }else{
+            leftIndexTilt="Folse";
+        }
+
+        if (0.03 > Mathf.Abs(leftThumbTip.z-leftThumb2.z)){
+            leftThumbTilt="True";
+        }else{
+            leftThumbTilt="Folse";
+        }
+
+        if (0.03 > Mathf.Abs(rightIndexTip.z - rightIndex1.z)){
+            rightIndexTilt="True";
+        }else{
+            rightIndexTilt="Folse";
+        }
+
+        if (0.03 > Mathf.Abs(rightThumbTip.z - rightThumb2.z)){
+            rightThumbTilt="True";
+        }else{
+            rightThumbTilt="Folse";
+        }
+
+
+        //指の曲げ伸ばし左
+        isThumbStraight = IsStraight(0.8f,OVRSkeleton.BoneId.Hand_Thumb1,OVRSkeleton.BoneId.Hand_Thumb2,OVRSkeleton.BoneId.Hand_Thumb3,OVRSkeleton.BoneId.Hand_ThumbTip);
+        isIndexStraight = IsStraight(0.8f, OVRSkeleton.BoneId.Hand_Index1, OVRSkeleton.BoneId.Hand_Index2, OVRSkeleton.BoneId.Hand_Index3, OVRSkeleton.BoneId.Hand_IndexTip);
+        isMiddleStraight = IsStraight(0.8f,OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
+        isRingStraight = IsStraight(0.8f, OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
+        isPinkyStraight = IsStraight(0.8f, OVRSkeleton.BoneId.Hand_Pinky0, OVRSkeleton.BoneId.Hand_Pinky1, OVRSkeleton.BoneId.Hand_Pinky2, OVRSkeleton.BoneId.Hand_Pinky3, OVRSkeleton.BoneId.Hand_PinkyTip);
+
+        //指の曲げ伸ばし右
+
+        rightisThumbStraight = IsStraightright(0.8f,OVRSkeleton.BoneId.Hand_Thumb1,OVRSkeleton.BoneId.Hand_Thumb2,OVRSkeleton.BoneId.Hand_Thumb3,OVRSkeleton.BoneId.Hand_ThumbTip);
+        rightisIndexStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Index1, OVRSkeleton.BoneId.Hand_Index2, OVRSkeleton.BoneId.Hand_Index3, OVRSkeleton.BoneId.Hand_IndexTip);
+        rightisMiddleStraight = IsStraightright(0.8f,OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
+        rightisRingStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
+        rightisPinkyStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Pinky0, OVRSkeleton.BoneId.Hand_Pinky1, OVRSkeleton.BoneId.Hand_Pinky2, OVRSkeleton.BoneId.Hand_Pinky3, OVRSkeleton.BoneId.Hand_PinkyTip);
 
     }
 
@@ -95,14 +228,22 @@ public class playerStatus : MonoBehaviour
     }
 
     public void masuku(){
-        var isThumbStraight = IsStraightright(0.8f,OVRSkeleton.BoneId.Hand_Thumb1,OVRSkeleton.BoneId.Hand_Thumb2,OVRSkeleton.BoneId.Hand_Thumb3,OVRSkeleton.BoneId.Hand_ThumbTip);
-        var isIndexStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Index1, OVRSkeleton.BoneId.Hand_Index2, OVRSkeleton.BoneId.Hand_Index3, OVRSkeleton.BoneId.Hand_IndexTip);
-        var isMiddleStraight = IsStraightright(0.8f,OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
-        var isRingStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
-        var isPinkyStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Pinky0, OVRSkeleton.BoneId.Hand_Pinky1, OVRSkeleton.BoneId.Hand_Pinky2, OVRSkeleton.BoneId.Hand_Pinky3, OVRSkeleton.BoneId.Hand_PinkyTip);
+        var leftExtend="Folse";
+        var rightExtend="Folse";
 
         //指の曲げ伸ばしはあっているか
         if(isThumbStraight && isIndexStraight && !isMiddleStraight  && !isRingStraight  && !isPinkyStraight ){ //人差し指だけまっすぐで、その他が曲がっている
+            leftExtend="True";
+        }else{
+            leftExtend="Folse";
+        }
+        if(rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
+            rightExtend="True";
+        }else{
+            rightExtend="Folse";
+        }
+
+        if (leftExtend=="True" & rightExtend =="True"){
             extend="True";
         }else{
             extend="Folse";
@@ -110,14 +251,6 @@ public class playerStatus : MonoBehaviour
 
 
 
-        var leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
-        var leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
-        var leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
-        var leftIndex1=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
-        var rightThumbTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
-        var rightThumb2=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
-        var rightIndexTip=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
-        var rightIndex1=righthand.Bones[(int) OVRSkeleton.BoneId.Hand_Index1].Transform.position;
         //左手の人差し指と親指の
         var distance=(leftThumbTip-leftThumb2).normalized;
         var distance2=(leftIndexTip-leftThumb2).normalized;
@@ -141,37 +274,6 @@ public class playerStatus : MonoBehaviour
 
 
 
-        //ひとさし指か親指が垂直かどうか
-        //左手の人差し指が水平かどうか
-        var leftIndexHorizontalValue=Mathf.Abs((leftIndexTip.y-leftIndex1.y)*100);
-        if (2 >= leftIndexHorizontalValue){
-            leftIndexHorizontal="True";
-        }else{
-            leftIndexHorizontal="Folse";
-        }
-
-        //左手の人差し指が垂直かどうか
-        var leftIndexVerticalValue=Mathf.Abs((leftIndexTip.x-leftIndex1.x)*100);
-        if (2 >= leftIndexVerticalValue){
-            leftIndexVertical="True";
-        }else{
-            leftIndexVertical="Folse";
-        }
-
-        //右手のひとさし指が水平かどうか
-        var rightIndexHorizontalValue=Mathf.Abs((rightIndexTip.y-rightIndex1.y)*100);
-        if (2 >= rightIndexHorizontalValue){
-            rightIndexHorizontal="True";
-        }else{
-            rightIndexHorizontal="Folse";
-        }
-
-        var rightIndexVerticalValue=Mathf.Abs((rightIndexTip.x-rightIndex1.x)*100);
-        if (2 >= rightIndexVerticalValue){
-            rightIndexVertical="True";
-        }else{
-            rightIndexVertical="Folse";
-        }
 
 
         //片方の手がもう片方のなかにいる
@@ -235,34 +337,25 @@ public class playerStatus : MonoBehaviour
 
 
         //手は離れすぎていないか
-        if (leftThumb2.y > rightThumb2.y & 5 > leftThumb2.y / rightThumb2.y ){
-            handDistance1="True";
-        }else if(rightThumb2.y > leftThumb2.y & 5 > rightThumb2.y / leftThumb2.y){
-            handDistance1="True";
-        }else{
-            handDistance1="Folse";
-        }
+        float xdistance=Mathf.Abs(leftThumb2.x-rightThumb2.x);
+        float ydistance=Mathf.Abs(leftThumb2.y-rightThumb2.y);
+        Debug.Log("xdistance"+xdistance);
+        Debug.Log("ydistance"+ydistance);
+        if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
+            if(0.3 > ydistance){
+                handDistance="True";
+            }else{
+                handDistance="Folse";
+            }
 
-        if (leftThumb2.x > rightThumb2.x & 5 > leftThumb2.x / rightThumb2.x ){
-            handDistance2="True";
-        }else if(rightThumb2.x > leftThumb2.x & 5 > rightThumb2.x / leftThumb2.x){
-            handDistance2="True";
-        }else{
-            handDistance2="Folse";
-        }
-
-        if(handDistance1=="True" & handDistance2=="True"){
-            handDistance="True";
         }else{
             handDistance="Folse";
         }
 
 
 
-
-
         //マスクができているか
-        if (extend=="True" & fingerAngle=="True" & pattern=="True" & handDistance=="True"){
+        if (extend=="True" & fingerAngle=="True" & pattern=="True" & handDistance=="True" & leftIndexTilt=="True" & leftThumbTilt=="True" & rightIndexTilt == "True" & rightThumbTilt == "True"){
             msk="True";
         }else{
             msk="Folse";
@@ -274,9 +367,137 @@ public class playerStatus : MonoBehaviour
         Debug.Log(msk);
 
     }
+    public IEnumerator leave(){
+        var rightLeaveJudgment="Folse";
+        var leftLeaveJudgment="Folse";
+        rightleave.Add(rightThumb2);
+        leftleave.Add(leftThumb2);
 
 
+        if (10 >= leftleave.Count){
+            if(leftleave.Count == 1){
+                leftminimum = leftleave[0].x;
+                leftmaxium = leftleave[0].x;
+            }else{
+                foreach(Vector3 i in leftleave){
+                    if (leftminimum > i.x){
+                        leftminimum = i.x;
+                    }else if (i.x > leftmaxium){
+                        leftmaxium = i.x;
+                    }
+                }
+            }
+        }else if (leftleave.Count > 10){
+            leftleave.RemoveAt(0);
+            foreach(Vector3 u in leftleave){
+                if (leftleave.IndexOf(u) == 0){
+                    leftminimum = u.x;
+                    leftmaxium = u.x;
+                }
+                if (leftminimum > u.x){
+                    leftminimum = u.x;
+                }else if (u.x > leftmaxium){
+                    leftmaxium = u.x;
+                }
+            }
 
+        }
+
+        if (10 >= rightleave.Count){
+            if(rightleave.Count == 1){
+                rightminimum = rightleave[0].x;
+                rightmaximum = rightleave[0].x;
+            }else{
+                foreach(Vector3 i in rightleave){
+                    if (rightminimum > i.x){
+                        rightminimum = i.x;
+                    }else if (i.x > rightmaximum){
+                        rightmaximum = i.x;
+                    }
+                }
+            }
+        }else if (rightleave.Count > 10){
+            rightleave.RemoveAt(0);
+            foreach(Vector3 u in rightleave){
+                if (rightleave.IndexOf(u) == 0){
+                    rightminimum=u.x;
+                    rightmaximum=u.x;
+                }
+                if (rightminimum > u.x){
+                    rightminimum = u.x;
+                }else if (u.x > rightmaximum){
+                    rightmaximum = u.x;
+                }
+            }
+        }
+        if (leftmaxium - leftminimum > 0.1){
+            leftLeaveJudgment="True";
+        }else{
+            leftLeaveJudgment="Folse";
+        }
+        if (rightmaximum - rightminimum > 0.1){
+            rightLeaveJudgment="True";
+        }else{
+            rightLeaveJudgment="Folse";
+        }
+
+        if (leftLeaveJudgment == "True" & rightLeaveJudgment == "True" & leftIndexTip.y > leftThumbTip.y & rightIndexTip.y > rightThumbTip.y & 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
+            leaveStatus="True";
+        }else{
+            leaveStatus="Folse";
+        }
+
+
+        yield return new WaitForSeconds(0.02f);
+        StartCoroutine("leave");
+    }
+
+    public void quiet(){
+        var leftstright="Folse";
+        var rightstright="Folse";
+        var leftstatus="Folse";
+        var rightstatus="Folse";
+
+        //指の曲げ伸ばしが正しいか
+        if (!isThumbStraight & isIndexStraight & !isMiddleStraight & !isRingStraight & !isPinkyStraight){
+            leftstright="True";
+        }else{
+            leftstright="Folse";
+        }
+
+        if(!rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
+            rightstright = "True";
+        }else{
+            rightstright = "Folse";
+        }
+
+
+　　　　//指の状態は正しいか
+        if (leftIndexTilt=="True" & leftIndexVertical=="True"){
+            leftstatus="True";
+        }else{
+            leftstatus="Folse";
+        }
+
+        if (rightIndexTilt=="True" & rightIndexVertical=="True"){
+            rightstatus="True";
+        }else{
+            rightstatus="Folse";
+        }
+
+        //静かにしなさいジェスチャーがただしいかどうか
+        if (leftstright=="True" & leftstatus=="True" & leftThumb2.y > rightThumb2.y){
+            quietStatus="True";
+
+        }else if (rightstright=="True" & rightstatus=="True" & rightThumb2.y > leftThumb2.y){
+            quietStatus="True";
+
+        }else{
+            quietStatus="Folse";
+        }
+
+
+    }
 
 
 }
