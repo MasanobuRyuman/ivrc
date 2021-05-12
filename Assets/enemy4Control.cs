@@ -14,8 +14,20 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
         bool crouch;
 
+        int hp=0;
+        GameObject player;
+        playerStatus ps;
+        GameObject gameloop;
+        gameloop gl;
+
+
         private void Start()
         {
+            player = GameObject.Find("player");
+            ps = player.GetComponent<playerStatus>();
+
+            gameloop = GameObject.Find("gameloop");
+            gl = gameloop.GetComponent<gameloop>();
             // get the transform of the main camera
             if (Camera.main != null)
             {
@@ -35,6 +47,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
         private void Update()
         {
+
             if (!m_Jump)
             {
                 //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
@@ -54,6 +67,27 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             //Debug.Log(m_Move);
             m_Character.Move(m_Move, crouch, m_Jump);
 
+
+        }
+        private void OnTriggerStay(Collider other){
+            if(other.tag == "Player"){
+                ps.quiet();
+                //Debug.Log(transform.tag);
+                //Debug.Log("enemy1");
+                if (transform.tag == "talk"){
+                    //Debug.Log("kiteru");
+                    Debug.Log(ps.quietStatus);
+
+                    if (ps.quietStatus=="True"){
+                        Debug.Log("gole");
+                        if (hp==0){
+                            gl.score+=1;
+                            hp+=1;
+                        }
+                    }
+                }
+
+            }
 
         }
     }
