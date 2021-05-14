@@ -32,8 +32,8 @@ public class playerStatus : MonoBehaviour
     string pattern1;
     string pattern2;
     string pattern;
-    string msk;
-    string leaveStatus;
+    public string msk = "False";
+    public string leaveStatus = "False";
 
     Vector3 leftThumbTip;
     Vector3 leftThumb2;
@@ -70,7 +70,7 @@ public class playerStatus : MonoBehaviour
     string rightIndexTilt;
     string rightThumbTilt;
 
-    string quietStatus;
+    public string quietStatus = "False";
 
 
     List<Vector3> rightleave=new List<Vector3>();
@@ -97,9 +97,8 @@ public class playerStatus : MonoBehaviour
 
 
         time=Time.deltaTime;
-        if (Input.GetKey(KeyCode.A)){
-            masuku();
-        }
+        //masuku();
+
 
         if (Input.GetKey(KeyCode.S)){
             leave();
@@ -114,7 +113,7 @@ public class playerStatus : MonoBehaviour
         if (0.03 >= leftIndexHorizontalValue){
             leftIndexHorizontal="True";
         }else{
-            leftIndexHorizontal="Folse";
+            leftIndexHorizontal="False";
         }
 
         //左手の人差し指が垂直かどうか
@@ -122,7 +121,7 @@ public class playerStatus : MonoBehaviour
         if (0.03 >= leftIndexVerticalValue){
             leftIndexVertical="True";
         }else{
-            leftIndexVertical="Folse";
+            leftIndexVertical="False";
         }
 
         //右手のひとさし指が水平かどうか
@@ -130,40 +129,40 @@ public class playerStatus : MonoBehaviour
         if (0.03 >= rightIndexHorizontalValue){
             rightIndexHorizontal="True";
         }else{
-            rightIndexHorizontal="Folse";
+            rightIndexHorizontal="False";
         }
 
         //右手の人差し指が垂直かどうか
         var rightIndexVerticalValue=Mathf.Abs(rightIndexTip.x-rightIndex1.x);
-        if (0.03 >= rightIndexVerticalValue){
+        if (0.06 >= rightIndexVerticalValue){
             rightIndexVertical="True";
         }else{
-            rightIndexVertical="Folse";
+            rightIndexVertical="False";
         }
 
         //左手の人差し指が傾いていないか
-        if (0.03 > Mathf.Abs(leftIndexTip.z-leftIndex1.z)){
+        if (0.06 > Mathf.Abs(leftIndexTip.z-leftIndex1.z)){
             leftIndexTilt="True";
         }else{
-            leftIndexTilt="Folse";
+            leftIndexTilt="False";
         }
 
-        if (0.03 > Mathf.Abs(leftThumbTip.z-leftThumb2.z)){
+        if (0.04 > Mathf.Abs(leftThumbTip.z-leftThumb2.z)){
             leftThumbTilt="True";
         }else{
-            leftThumbTilt="Folse";
+            leftThumbTilt="False";
         }
 
-        if (0.03 > Mathf.Abs(rightIndexTip.z - rightIndex1.z)){
+        if (0.06 > Mathf.Abs(rightIndexTip.z - rightIndex1.z)){
             rightIndexTilt="True";
         }else{
-            rightIndexTilt="Folse";
+            rightIndexTilt="False";
         }
 
-        if (0.03 > Mathf.Abs(rightThumbTip.z - rightThumb2.z)){
+        if (0.04 > Mathf.Abs(rightThumbTip.z - rightThumb2.z)){
             rightThumbTilt="True";
         }else{
-            rightThumbTilt="Folse";
+            rightThumbTilt="False";
         }
 
 
@@ -228,25 +227,25 @@ public class playerStatus : MonoBehaviour
     }
 
     public void masuku(){
-        var leftExtend="Folse";
-        var rightExtend="Folse";
+        var leftExtend="False";
+        var rightExtend="False";
 
         //指の曲げ伸ばしはあっているか
         if(isThumbStraight && isIndexStraight && !isMiddleStraight  && !isRingStraight  && !isPinkyStraight ){ //人差し指だけまっすぐで、その他が曲がっている
             leftExtend="True";
         }else{
-            leftExtend="Folse";
+            leftExtend="False";
         }
         if(rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
             rightExtend="True";
         }else{
-            rightExtend="Folse";
+            rightExtend="False";
         }
 
         if (leftExtend=="True" & rightExtend =="True"){
             extend="True";
         }else{
-            extend="Folse";
+            extend="False";
         }
 
 
@@ -269,7 +268,7 @@ public class playerStatus : MonoBehaviour
         if (0.8 >leftFingerAngle & 0.8 > rightFingerAngle ){
             fingerAngle="True";
         }else{
-            fingerAngle="Folse";
+            fingerAngle="False";
         }
 
 
@@ -281,57 +280,57 @@ public class playerStatus : MonoBehaviour
             if(rightThumb2.x>leftThumb2.x & rightThumb2.y > leftThumb2.y){
                 leftpattern1="True";
             }else{
-                leftpattern1="Folse";
+                leftpattern1="False";
             }
         }else{
-            leftpattern1="Folse";
+            leftpattern1="False";
         }
 
         if (rightIndexHorizontal=="True" & rightIndexTip.y > rightThumbTip.y || rightIndexVertical=="True" & rightThumbTip.y>rightIndexTip.y){
             if(rightThumb2.x > leftThumb2.x & rightThumb2.y > leftThumb2.y){
                 rightpattern1="True";
             }else{
-                rightpattern1="Folse";
+                rightpattern1="False";
             }
         }else{
-            rightpattern1="Folse";
+            rightpattern1="False";
         }
 
         if(leftIndexHorizontal=="True" & leftIndexTip.y > leftThumbTip.y || leftIndexVertical=="True" & leftThumbTip.y > leftIndexTip.y){
             if (rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
                 leftpattern2="True";
             }else{
-                leftpattern2="Folse";
+                leftpattern2="False";
             }
         }else{
-            leftpattern2="Folse";
+            leftpattern2="False";
         }
 
         if(rightIndexHorizontal=="True" & rightThumbTip.y > rightIndexTip.y || rightIndexVertical=="True" & rightIndexTip.y > rightThumbTip.y){
             if(rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
                 rightpattern2="True";
             }else{
-                rightpattern2="Folse";
+                rightpattern2="False";
             }
         }else{
-            rightpattern2="Folse";
+            rightpattern2="False";
         }
 
         if(leftpattern1 == "True" & rightpattern1== "True"){
             pattern1="True";
         }else{
-            pattern1="Folse";
+            pattern1="False";
         }
         if(leftpattern2 == "True" & leftpattern2 == "True"){
             pattern2="True";
         }else{
-            pattern2="Folse";
+            pattern2="False";
         }
 
         if(pattern1=="True" || pattern2=="True"){
             pattern="True";
         }else{
-            pattern="Folse";
+            pattern="False";
         }
 
 
@@ -341,15 +340,16 @@ public class playerStatus : MonoBehaviour
         float ydistance=Mathf.Abs(leftThumb2.y-rightThumb2.y);
         Debug.Log("xdistance"+xdistance);
         Debug.Log("ydistance"+ydistance);
+        Debug.Log(xdistance/ydistance);
         if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
             if(0.3 > ydistance){
                 handDistance="True";
             }else{
-                handDistance="Folse";
+                handDistance="False";
             }
 
         }else{
-            handDistance="Folse";
+            handDistance="False";
         }
 
 
@@ -358,18 +358,22 @@ public class playerStatus : MonoBehaviour
         if (extend=="True" & fingerAngle=="True" & pattern=="True" & handDistance=="True" & leftIndexTilt=="True" & leftThumbTilt=="True" & rightIndexTilt == "True" & rightThumbTilt == "True"){
             msk="True";
         }else{
-            msk="Folse";
+            msk="False";
         }
         Debug.Log("指の曲げ伸ばし"+extend);
         Debug.Log("指の角度"+fingerAngle);
         Debug.Log("片方の手に入っているか"+pattern);
         Debug.Log("てのきょり"+handDistance);
+        Debug.Log("左手の人差し指の傾き"+ leftIndexTilt);
+        Debug.Log("左手の親指の傾き"+leftThumbTilt);
+        Debug.Log("右手の人差し指の傾き"+rightIndexTilt);
+        Debug.Log("右手の親指のかたむき"+rightThumbTilt);
         Debug.Log(msk);
 
     }
     public IEnumerator leave(){
-        var rightLeaveJudgment="Folse";
-        var leftLeaveJudgment="Folse";
+        var rightLeaveJudgment="False";
+        var leftLeaveJudgment="False";
         rightleave.Add(rightThumb2);
         leftleave.Add(leftThumb2);
 
@@ -433,18 +437,18 @@ public class playerStatus : MonoBehaviour
         if (leftmaxium - leftminimum > 0.1){
             leftLeaveJudgment="True";
         }else{
-            leftLeaveJudgment="Folse";
+            leftLeaveJudgment="False";
         }
         if (rightmaximum - rightminimum > 0.1){
             rightLeaveJudgment="True";
         }else{
-            rightLeaveJudgment="Folse";
+            rightLeaveJudgment="False";
         }
 
         if (leftLeaveJudgment == "True" & rightLeaveJudgment == "True" & leftIndexTip.y > leftThumbTip.y & rightIndexTip.y > rightThumbTip.y & 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
             leaveStatus="True";
         }else{
-            leaveStatus="Folse";
+            leaveStatus="False";
         }
 
 
@@ -453,36 +457,36 @@ public class playerStatus : MonoBehaviour
     }
 
     public void quiet(){
-        var leftstright="Folse";
-        var rightstright="Folse";
-        var leftstatus="Folse";
-        var rightstatus="Folse";
+        var leftstright="False";
+        var rightstright="False";
+        var leftstatus="False";
+        var rightstatus="False";
 
         //指の曲げ伸ばしが正しいか
         if (!isThumbStraight & isIndexStraight & !isMiddleStraight & !isRingStraight & !isPinkyStraight){
             leftstright="True";
         }else{
-            leftstright="Folse";
+            leftstright="False";
         }
 
         if(!rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
             rightstright = "True";
         }else{
-            rightstright = "Folse";
+            rightstright = "False";
         }
 
 
-　　　　//指の状態は正しいか
+        //指の状態は正しいか
         if (leftIndexTilt=="True" & leftIndexVertical=="True"){
             leftstatus="True";
         }else{
-            leftstatus="Folse";
+            leftstatus="False";
         }
 
         if (rightIndexTilt=="True" & rightIndexVertical=="True"){
             rightstatus="True";
         }else{
-            rightstatus="Folse";
+            rightstatus="False";
         }
 
         //静かにしなさいジェスチャーがただしいかどうか
@@ -493,8 +497,10 @@ public class playerStatus : MonoBehaviour
             quietStatus="True";
 
         }else{
-            quietStatus="Folse";
+            quietStatus="False";
         }
+
+
 
 
     }
