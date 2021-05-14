@@ -476,7 +476,7 @@ public class playerStatus : MonoBehaviour
         }
 
 
-　　　　//指の状態は正しいか
+        //指の状態は正しいか
         if (leftIndexTilt=="True" & leftIndexVertical=="True"){
             leftstatus="True";
         }else{

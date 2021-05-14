@@ -172,6 +172,12 @@ public class OVRSkeletonRenderer : MonoBehaviour
 			capsuleScale.x = boneCapsule.CapsuleCollider.radius * 2;
 			capsuleScale.z = boneCapsule.CapsuleCollider.radius * 2;
 			CapsuleGO.transform.localScale = capsuleScale * scale;
+
+			if (Input.GetKey(KeyCode.F)){
+				Debug.Log("コレタ");
+				Debug.Log(CapsuleGO.transform.position);
+
+			}
 		}
 
 		public void Update(float scale,

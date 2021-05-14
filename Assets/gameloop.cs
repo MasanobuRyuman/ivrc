@@ -9,6 +9,8 @@ public class gameloop : MonoBehaviour
     public int score=0;
     GameObject hand;
     HandsManager skeleton;
+    GameObject finger;
+    OVRSkeletonRenderer fi;
 
 
     void Start()
@@ -20,12 +22,7 @@ public class gameloop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A)){
-            Debug.Log("kikiki");
-
-
-            Debug.Log(skeleton.RightHand.transform.position);
-        }
+        
     }
 
 }

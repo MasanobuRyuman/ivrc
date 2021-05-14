@@ -327,6 +327,10 @@ public class OVRSkeleton : MonoBehaviour
 	private void Update()
 	{
 		if (Input.GetKey(KeyCode.Space)){
+			var indexTipPos = Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
+			var pinkyTip = Bones[(int) OVRSkeleton.BoneId.Hand_PinkyTip].Transform.position;
+			Debug.Log("人差し指のさき"+indexTipPos);
+			Debug.Log("小指のさき"+pinkyTip);
 		}
 #if UNITY_EDITOR
 		if (ShouldInitialize())
@@ -387,6 +391,9 @@ public class OVRSkeleton : MonoBehaviour
 					}
 				}
 			}
+		}
+		if (Input.GetKey(KeyCode.G)){
+			Debug.Log(_bones[1].Transform.position);
 		}
 
 	}
