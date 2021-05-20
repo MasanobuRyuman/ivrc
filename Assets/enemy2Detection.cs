@@ -11,6 +11,7 @@ public class enemy2Detection : MonoBehaviour
     GameObject gameloop;
     gameloop gl;
 
+
     void Start()
     {
         player = GameObject.Find("player");
@@ -26,18 +27,5 @@ public class enemy2Detection : MonoBehaviour
     {
 
     }
-    private void OnTriggerStay(Collider other){
-        if (transform.tag == "release"){
-            Debug.Log("leaveStatus"+ps.leaveStatus);
-            if(other.tag == "Player"){
-                //Debug.Log("enemy1");
-                if (ps.leaveStatus=="True"){
-                    if (hp==0){
-                        gl.score+=1;
-                        hp+=1;
-                    }
-                }
-            }
-        }
-    }
+    
 }

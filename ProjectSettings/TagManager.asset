@@ -11,6 +11,7 @@ TagManager:
   - masuku
   - release
   - talk
+  - enemy
   layers:
   - Default
   - TransparentFX

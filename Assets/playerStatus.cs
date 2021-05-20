@@ -5,6 +5,7 @@ using UnityEngine;
 public class playerStatus : MonoBehaviour
 {
     // Start is called before the first frame update
+    public enum GESTURETYPE {NONE,MASK,DISTANCE,QUIET};
     [SerializeField]
     private OVRSkeleton _skeleton; //右手、もしくは左手の Bone情報
     private OVRSkeleton righthand;
@@ -12,28 +13,26 @@ public class playerStatus : MonoBehaviour
     public GameObject rightHand;
     float leftFingerAngle;
     float rightFingerAngle;
-    string extend;
-    string fingerAngle;
-    string leftIndexHorizontal;
-    string leftIndexVertical;
-    string rightIndexHorizontal;
-    string rightIndexVertical;
-    string leftIndexStatus;
-    string rightIndexStatus;
-    string indexStatus;
-    string handDistance1;
-    string handDistance2;
-    string handDistance;
+    bool extend;
+    bool fingerAngle;
+    bool leftIndexHorizontal;
+    bool leftIndexVertical;
+    bool rightIndexHorizontal;
+    bool rightIndexVertical;
+    bool leftIndexStatus;
+    bool rightIndexStatus;
+    bool indexStatus;
+    bool handDistance1;
+    bool handDistance2;
+    bool handDistance;
 
-    string leftpattern1;
-    string rightpattern1;
-    string leftpattern2;
-    string rightpattern2;
-    string pattern1;
-    string pattern2;
-    string pattern;
-    public string msk = "False";
-    public string leaveStatus = "False";
+    bool leftpattern1;
+    bool rightpattern1;
+    bool leftpattern2;
+    bool rightpattern2;
+    bool pattern1;
+    bool pattern2;
+    bool pattern;
 
     Vector3 leftThumbTip;
     Vector3 leftThumb2;
@@ -63,14 +62,19 @@ public class playerStatus : MonoBehaviour
     bool rightisRingStraight;
     bool rightisPinkyStraight;
 
-    string stright;
+    bool stright;
 
-    string leftIndexTilt;
-    string leftThumbTilt;
-    string rightIndexTilt;
-    string rightThumbTilt;
+    bool leftIndexTilt;
+    bool leftThumbTilt;
+    bool rightIndexTilt;
+    bool rightThumbTilt;
 
-    public string quietStatus = "False";
+    bool quietStatus = false;
+    bool msk = false;
+    bool leaveStatus = false;
+
+    GameObject gameloop;
+    gameloop gl;
 
 
     List<Vector3> rightleave=new List<Vector3>();
@@ -81,11 +85,22 @@ public class playerStatus : MonoBehaviour
         _skeleton=leftHand.GetComponent<OVRSkeleton>();
         righthand=rightHand.GetComponent<OVRSkeleton>();
         StartCoroutine("leave");
+        gameloop = GameObject.Find("gameloop");
+        gl = gameloop.GetComponent<gameloop>();
     }
 
     // Update is called once per frame
     void Update()
     {
+//        Debug.Log(_skeleton);
+//        Debug.Log(_skeleton.Bones.Count);
+        if( _skeleton.Bones.Count == 0 )
+        {
+            msk = Input.GetKey(KeyCode.S);
+            quietStatus = Input.GetKey(KeyCode.G);
+            return;
+        }
+
         leftThumbTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_ThumbTip].Transform.position;
         leftThumb2=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_Thumb2].Transform.position;
         leftIndexTip=_skeleton.Bones[(int) OVRSkeleton.BoneId.Hand_IndexTip].Transform.position;
@@ -99,70 +114,62 @@ public class playerStatus : MonoBehaviour
         time=Time.deltaTime;
         //masuku();
 
-
-        if (Input.GetKey(KeyCode.S)){
-            leave();
-        }
-
-        if (Input.GetKey(KeyCode.G)){
-            quiet();
-        }
         //ひとさし指か親指が垂直かどうか
         //左手の人差し指が水平かどうか
         var leftIndexHorizontalValue=Mathf.Abs(leftIndexTip.y-leftIndex1.y);
         if (0.03 >= leftIndexHorizontalValue){
-            leftIndexHorizontal="True";
+            leftIndexHorizontal=true;
         }else{
-            leftIndexHorizontal="False";
+            leftIndexHorizontal=false;
         }
 
         //左手の人差し指が垂直かどうか
         var leftIndexVerticalValue=Mathf.Abs(leftIndexTip.x-leftIndex1.x);
         if (0.03 >= leftIndexVerticalValue){
-            leftIndexVertical="True";
+            leftIndexVertical=true;
         }else{
-            leftIndexVertical="False";
+            leftIndexVertical=false;
         }
 
         //右手のひとさし指が水平かどうか
         var rightIndexHorizontalValue=Mathf.Abs(rightIndexTip.y-rightIndex1.y);
         if (0.03 >= rightIndexHorizontalValue){
-            rightIndexHorizontal="True";
+            rightIndexHorizontal=true;
         }else{
-            rightIndexHorizontal="False";
+            rightIndexHorizontal=false;
         }
 
         //右手の人差し指が垂直かどうか
         var rightIndexVerticalValue=Mathf.Abs(rightIndexTip.x-rightIndex1.x);
         if (0.06 >= rightIndexVerticalValue){
-            rightIndexVertical="True";
+            rightIndexVertical=true;
         }else{
-            rightIndexVertical="False";
+            rightIndexVertical=false;
         }
 
         //左手の人差し指が傾いていないか
         if (0.06 > Mathf.Abs(leftIndexTip.z-leftIndex1.z)){
-            leftIndexTilt="True";
+            leftIndexTilt=true;
         }else{
-            leftIndexTilt="False";
+            leftIndexTilt=false;
         }
 
         if (0.04 > Mathf.Abs(leftThumbTip.z-leftThumb2.z)){
-            leftThumbTilt="True";
+            leftThumbTilt=true;
         }else{
-            leftThumbTilt="False";
+            leftThumbTilt=false;
         }
 
         if (0.06 > Mathf.Abs(rightIndexTip.z - rightIndex1.z)){
-            rightIndexTilt="True";
+            rightIndexTilt=true;
         }else{
-            rightIndexTilt="False";
+            rightIndexTilt=false;
         }
 
         if (0.04 > Mathf.Abs(rightThumbTip.z - rightThumb2.z)){
-            rightThumbTilt="True";
+            rightThumbTilt=true;
         }else{
-            rightThumbTilt="False";
+            rightThumbTilt=false;
         }
 
 
@@ -181,6 +188,8 @@ public class playerStatus : MonoBehaviour
         rightisRingStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Ring1, OVRSkeleton.BoneId.Hand_Ring2, OVRSkeleton.BoneId.Hand_Ring3, OVRSkeleton.BoneId.Hand_RingTip);
         rightisPinkyStraight = IsStraightright(0.8f, OVRSkeleton.BoneId.Hand_Pinky0, OVRSkeleton.BoneId.Hand_Pinky1, OVRSkeleton.BoneId.Hand_Pinky2, OVRSkeleton.BoneId.Hand_Pinky3, OVRSkeleton.BoneId.Hand_PinkyTip);
 
+        masuku();
+        quiet();
     }
 
 
@@ -227,25 +236,25 @@ public class playerStatus : MonoBehaviour
     }
 
     public void masuku(){
-        var leftExtend="False";
-        var rightExtend="False";
+        var leftExtend=false;
+        var rightExtend=false;
 
         //指の曲げ伸ばしはあっているか
         if(isThumbStraight && isIndexStraight && !isMiddleStraight  && !isRingStraight  && !isPinkyStraight ){ //人差し指だけまっすぐで、その他が曲がっている
-            leftExtend="True";
+            leftExtend=true;
         }else{
-            leftExtend="False";
+            leftExtend=false;
         }
         if(rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
-            rightExtend="True";
+            rightExtend=true;
         }else{
-            rightExtend="False";
+            rightExtend=false;
         }
 
-        if (leftExtend=="True" & rightExtend =="True"){
-            extend="True";
+        if (leftExtend==true & rightExtend ==true){
+            extend=true;
         }else{
-            extend="False";
+            extend=false;
         }
 
 
@@ -266,9 +275,9 @@ public class playerStatus : MonoBehaviour
 
 
         if (0.8 >leftFingerAngle & 0.8 > rightFingerAngle ){
-            fingerAngle="True";
+            fingerAngle=true;
         }else{
-            fingerAngle="False";
+            fingerAngle=false;
         }
 
 
@@ -276,61 +285,61 @@ public class playerStatus : MonoBehaviour
 
 
         //片方の手がもう片方のなかにいる
-        if (leftIndexHorizontal=="True" & leftThumbTip.y>leftIndexTip.y ||leftIndexVertical=="True" & leftIndexTip.y > leftThumbTip.y ){
+        if (leftIndexHorizontal==true & leftThumbTip.y>leftIndexTip.y ||leftIndexVertical==true & leftIndexTip.y > leftThumbTip.y ){
             if(rightThumb2.x>leftThumb2.x & rightThumb2.y > leftThumb2.y){
-                leftpattern1="True";
+                leftpattern1=true;
             }else{
-                leftpattern1="False";
+                leftpattern1=false;
             }
         }else{
-            leftpattern1="False";
+            leftpattern1=false;
         }
 
-        if (rightIndexHorizontal=="True" & rightIndexTip.y > rightThumbTip.y || rightIndexVertical=="True" & rightThumbTip.y>rightIndexTip.y){
+        if (rightIndexHorizontal==true & rightIndexTip.y > rightThumbTip.y || rightIndexVertical==true & rightThumbTip.y>rightIndexTip.y){
             if(rightThumb2.x > leftThumb2.x & rightThumb2.y > leftThumb2.y){
-                rightpattern1="True";
+                rightpattern1=true;
             }else{
-                rightpattern1="False";
+                rightpattern1=false;
             }
         }else{
-            rightpattern1="False";
+            rightpattern1=false;
         }
 
-        if(leftIndexHorizontal=="True" & leftIndexTip.y > leftThumbTip.y || leftIndexVertical=="True" & leftThumbTip.y > leftIndexTip.y){
+        if(leftIndexHorizontal==true & leftIndexTip.y > leftThumbTip.y || leftIndexVertical==true & leftThumbTip.y > leftIndexTip.y){
             if (rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
-                leftpattern2="True";
+                leftpattern2=true;
             }else{
-                leftpattern2="False";
+                leftpattern2=false;
             }
         }else{
-            leftpattern2="False";
+            leftpattern2=false;
         }
 
-        if(rightIndexHorizontal=="True" & rightThumbTip.y > rightIndexTip.y || rightIndexVertical=="True" & rightIndexTip.y > rightThumbTip.y){
+        if(rightIndexHorizontal==true & rightThumbTip.y > rightIndexTip.y || rightIndexVertical==true & rightIndexTip.y > rightThumbTip.y){
             if(rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
-                rightpattern2="True";
+                rightpattern2=true;
             }else{
-                rightpattern2="False";
+                rightpattern2=false;
             }
         }else{
-            rightpattern2="False";
+            rightpattern2=false;
         }
 
-        if(leftpattern1 == "True" & rightpattern1== "True"){
-            pattern1="True";
+        if(leftpattern1 == true & rightpattern1== true){
+            pattern1=true;
         }else{
-            pattern1="False";
+            pattern1=false;
         }
-        if(leftpattern2 == "True" & leftpattern2 == "True"){
-            pattern2="True";
+        if(leftpattern2 == true & leftpattern2 == true){
+            pattern2=true;
         }else{
-            pattern2="False";
+            pattern2=false;
         }
 
-        if(pattern1=="True" || pattern2=="True"){
-            pattern="True";
+        if(pattern1==true || pattern2==true){
+            pattern=true;
         }else{
-            pattern="False";
+            pattern=false;
         }
 
 
@@ -343,22 +352,22 @@ public class playerStatus : MonoBehaviour
         Debug.Log(xdistance/ydistance);
         if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
             if(0.3 > ydistance){
-                handDistance="True";
+                handDistance=true;
             }else{
-                handDistance="False";
+                handDistance=false;
             }
 
         }else{
-            handDistance="False";
+            handDistance=false;
         }
 
 
 
         //マスクができているか
-        if (extend=="True" & fingerAngle=="True" & pattern=="True" & handDistance=="True" & leftIndexTilt=="True" & leftThumbTilt=="True" & rightIndexTilt == "True" & rightThumbTilt == "True"){
-            msk="True";
+        if (extend==true & fingerAngle==true & pattern==true & handDistance==true & leftIndexTilt==true & leftThumbTilt==true & rightIndexTilt == true & rightThumbTilt == true){
+            msk=true;
         }else{
-            msk="False";
+            msk=false;
         }
         Debug.Log("指の曲げ伸ばし"+extend);
         Debug.Log("指の角度"+fingerAngle);
@@ -372,8 +381,8 @@ public class playerStatus : MonoBehaviour
 
     }
     public IEnumerator leave(){
-        var rightLeaveJudgment="False";
-        var leftLeaveJudgment="False";
+        var rightLeaveJudgment=false;
+        var leftLeaveJudgment=false;
         rightleave.Add(rightThumb2);
         leftleave.Add(leftThumb2);
 
@@ -435,20 +444,20 @@ public class playerStatus : MonoBehaviour
             }
         }
         if (leftmaxium - leftminimum > 0.1){
-            leftLeaveJudgment="True";
+            leftLeaveJudgment=true;
         }else{
-            leftLeaveJudgment="False";
+            leftLeaveJudgment=false;
         }
         if (rightmaximum - rightminimum > 0.1){
-            rightLeaveJudgment="True";
+            rightLeaveJudgment=true;
         }else{
-            rightLeaveJudgment="False";
+            rightLeaveJudgment=false;
         }
 
-        if (leftLeaveJudgment == "True" & rightLeaveJudgment == "True" & leftIndexTip.y > leftThumbTip.y & rightIndexTip.y > rightThumbTip.y & 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
-            leaveStatus="True";
+        if (leftLeaveJudgment == true & rightLeaveJudgment == true & leftIndexTip.y > leftThumbTip.y & rightIndexTip.y > rightThumbTip.y & 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
+            leaveStatus=true;
         }else{
-            leaveStatus="False";
+            leaveStatus=false;
         }
 
 
@@ -457,53 +466,74 @@ public class playerStatus : MonoBehaviour
     }
 
     public void quiet(){
-        var leftstright="False";
-        var rightstright="False";
-        var leftstatus="False";
-        var rightstatus="False";
+        var leftstright=false;
+        var rightstright=false;
+        var leftstatus=false;
+        var rightstatus=false;
 
         //指の曲げ伸ばしが正しいか
         if (!isThumbStraight & isIndexStraight & !isMiddleStraight & !isRingStraight & !isPinkyStraight){
-            leftstright="True";
+            leftstright=true;
         }else{
-            leftstright="False";
+            leftstright=false;
         }
 
         if(!rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
-            rightstright = "True";
+            rightstright = true;
         }else{
-            rightstright = "False";
+            rightstright = false;
         }
 
 
         //指の状態は正しいか
-        if (leftIndexTilt=="True" & leftIndexVertical=="True"){
-            leftstatus="True";
+        if (leftIndexTilt==true & leftIndexVertical==true){
+            leftstatus=true;
         }else{
-            leftstatus="False";
+            leftstatus=false;
         }
 
-        if (rightIndexTilt=="True" & rightIndexVertical=="True"){
-            rightstatus="True";
+        if (rightIndexTilt==true & rightIndexVertical==true){
+            rightstatus=true;
         }else{
-            rightstatus="False";
+            rightstatus=false;
         }
 
         //静かにしなさいジェスチャーがただしいかどうか
-        if (leftstright=="True" & leftstatus=="True" & leftThumb2.y > rightThumb2.y){
-            quietStatus="True";
+        if (leftstright==true & leftstatus==true & leftThumb2.y > rightThumb2.y){
+            quietStatus=true;
 
-        }else if (rightstright=="True" & rightstatus=="True" & rightThumb2.y > leftThumb2.y){
-            quietStatus="True";
+        }else if (rightstright==true & rightstatus==true & rightThumb2.y > leftThumb2.y){
+            quietStatus=true;
 
         }else{
-            quietStatus="False";
+            quietStatus=false;
         }
-
-
-
 
     }
 
+    private void OnTriggerStay(Collider other){
+        GESTURETYPE gesture = GESTURETYPE.NONE;
+        GameObject en ;
+        enemyLife el;
+        if (other.tag == "enemy"){
+
+            en = other.gameObject;
+            el = en.GetComponent<enemyLife>();
+
+            if ( msk == true ) {
+                gesture=GESTURETYPE.MASK;
+            }
+            if ( quietStatus == true ) {
+                gesture = GESTURETYPE.QUIET;
+            }
+            if ( leaveStatus == true ) {
+                gesture = GESTURETYPE.DISTANCE;
+            }
+
+            if (el.Warn(gesture) == true){
+                gl.score+=1;
+            }
+        }
+    }
 
 }

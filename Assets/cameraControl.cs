@@ -6,7 +6,7 @@ using UnityEngine;
 /// This component is responsible for moving the character capsule to match the HMD, fading out the camera or blocking movement when
 /// collisions occur, and adjusting the character capsule height to match the HMD's offset from the ground.
 /// </summary>
-public class cmaeraControl : MonoBehaviour
+public class cameraControl : MonoBehaviour
 {
     // Distance in front of the camera at which fading begins.
     private const float FADE_RAY_LENGTH = 0.25f;
@@ -48,7 +48,7 @@ public class cmaeraControl : MonoBehaviour
     private CapsuleCollider _character;
     private SimpleCapsuleWithStickMovement _simplePlayerController;
 
-    
+
     private void Awake()
     {
         _character = GetComponent<CapsuleCollider>();

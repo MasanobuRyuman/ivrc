@@ -68,24 +68,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 
         }
-        private void OnTriggerStay(Collider other){
-            if(other.tag == "Player"){
-                ps.masuku();
-                //Debug.Log(transform.tag);
-                //Debug.Log("enemy1");
-                if (transform.tag == "masuku"){
-                    //Debug.Log("kiteru");
-
-                    if (ps.msk=="True"){
-                        Debug.Log("gole");
-                        if (hp==0){
-                            gl.score+=1;
-                            hp+=1;
-                        }
-                    }
-                }
-
-            }
-        }
+        
     }
 }

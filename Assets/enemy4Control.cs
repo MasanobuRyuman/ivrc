@@ -69,26 +69,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 
         }
-        private void OnTriggerStay(Collider other){
-            if(other.tag == "Player"){
-                ps.quiet();
-                //Debug.Log(transform.tag);
-                //Debug.Log("enemy1");
-                if (transform.tag == "talk"){
-                    //Debug.Log("kiteru");
-                    Debug.Log(ps.quietStatus);
-
-                    if (ps.quietStatus=="True"){
-                        Debug.Log("gole");
-                        if (hp==0){
-                            gl.score+=1;
-                            hp+=1;
-                        }
-                    }
-                }
-
-            }
-
-        }
+        
     }
 }
