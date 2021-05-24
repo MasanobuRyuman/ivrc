@@ -20,6 +20,6 @@ public class scoremanger : MonoBehaviour
     {
         Text score_text = score_object.GetComponent<Text> ();
         // テキストの表示を入れ替える
-        score_text.text = "socre"+gl.score;
+        score_text.text = "感染者数"+gl.score+"人";
     }
 }
