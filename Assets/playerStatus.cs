@@ -69,6 +69,8 @@ public class playerStatus : MonoBehaviour
     bool rightIndexTilt;
     bool rightThumbTilt;
 
+    bool leftQuietStatus = false;
+    bool rightQuietStatus = false;
     bool quietStatus = false;
     bool msk = false;
     bool leaveStatus = false;
@@ -77,8 +79,18 @@ public class playerStatus : MonoBehaviour
     gameloop gl;
 
 
+    enum Looking {
+        LEFT,
+        RIGHT,
+    };
+
+    Looking lookingDirection;
+
+
     List<Vector3> rightleave=new List<Vector3>();
     List<Vector3> leftleave=new List<Vector3>();
+
+    GameObject camera;
 
     void Start()
     {
@@ -87,6 +99,7 @@ public class playerStatus : MonoBehaviour
         StartCoroutine("leave");
         gameloop = GameObject.Find("gameloop");
         gl = gameloop.GetComponent<gameloop>();
+        camera = GameObject.Find("OVRCameraRig");
     }
 
     // Update is called once per frame
@@ -190,6 +203,8 @@ public class playerStatus : MonoBehaviour
 
         masuku();
         quiet();
+        look();
+        Debug.Log("updateQuietstatus"+quietStatus);
     }
 
 
@@ -347,9 +362,9 @@ public class playerStatus : MonoBehaviour
         //手は離れすぎていないか
         float xdistance=Mathf.Abs(leftThumb2.x-rightThumb2.x);
         float ydistance=Mathf.Abs(leftThumb2.y-rightThumb2.y);
-        Debug.Log("xdistance"+xdistance);
-        Debug.Log("ydistance"+ydistance);
-        Debug.Log(xdistance/ydistance);
+        //Debug.Log("xdistance"+xdistance);
+        //Debug.Log("ydistance"+ydistance);
+        //Debug.Log(xdistance/ydistance);
         if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
             if(0.3 > ydistance){
                 handDistance=true;
@@ -369,15 +384,15 @@ public class playerStatus : MonoBehaviour
         }else{
             msk=false;
         }
-        Debug.Log("指の曲げ伸ばし"+extend);
-        Debug.Log("指の角度"+fingerAngle);
-        Debug.Log("片方の手に入っているか"+pattern);
-        Debug.Log("てのきょり"+handDistance);
-        Debug.Log("左手の人差し指の傾き"+ leftIndexTilt);
-        Debug.Log("左手の親指の傾き"+leftThumbTilt);
-        Debug.Log("右手の人差し指の傾き"+rightIndexTilt);
-        Debug.Log("右手の親指のかたむき"+rightThumbTilt);
-        Debug.Log(msk);
+        //Debug.Log("指の曲げ伸ばし"+extend);
+        //Debug.Log("指の角度"+fingerAngle);
+        //Debug.Log("片方の手に入っているか"+pattern);
+        //Debug.Log("てのきょり"+handDistance);
+        //Debug.Log("左手の人差し指の傾き"+ leftIndexTilt);
+        //Debug.Log("左手の親指の傾き"+leftThumbTilt);
+        //Debug.Log("右手の人差し指の傾き"+rightIndexTilt);
+        //Debug.Log("右手の親指のかたむき"+rightThumbTilt);
+        //Debug.Log(msk);
 
     }
     public IEnumerator leave(){
@@ -500,38 +515,78 @@ public class playerStatus : MonoBehaviour
 
         //静かにしなさいジェスチャーがただしいかどうか
         if (leftstright==true & leftstatus==true & leftThumb2.y > rightThumb2.y){
-            quietStatus=true;
-
-        }else if (rightstright==true & rightstatus==true & rightThumb2.y > leftThumb2.y){
-            quietStatus=true;
-
+            leftQuietStatus=true;
+        }else {
+            leftQuietStatus=false;
+        }
+        if (rightstright==true & rightstatus==true & rightThumb2.y > leftThumb2.y){
+            rightQuietStatus=true;
         }else{
-            quietStatus=false;
+            rightQuietStatus = false;
+        }
+
+        if (leftQuietStatus == true | rightQuietStatus == true){
+            quietStatus = true;
+        }else{
+            quietStatus = false;
         }
 
     }
 
+    void look(){
+        //Debug.Log("kita");
+        //Debug.Log("カメラ位置"+camera.transform.position.x);
+        if (leftQuietStatus == true){
+            if (camera.transform.position.x > leftIndexTip.x){
+                lookingDirection = Looking.LEFT;
+            } else {
+                lookingDirection = Looking.RIGHT;
+            }
+        }
+
+        if (rightQuietStatus == true){
+            if (camera.transform.position.x > rightIndexTip.x){
+                lookingDirection = Looking.LEFT;
+            } else {
+                lookingDirection = Looking.RIGHT;
+            }
+        }
+
+        if (msk == true | leaveStatus == true){
+            if (leftThumb2.z > rightThumb2.z){
+                lookingDirection = Looking.RIGHT;
+            } else {
+                lookingDirection = Looking.LEFT;
+            }
+        }
+    }
+
+
     private void OnTriggerStay(Collider other){
+        Debug.Log("quietStatus"+quietStatus);
         GESTURETYPE gesture = GESTURETYPE.NONE;
         GameObject en ;
         enemyLife el;
-        if (other.tag == "enemy"){
+        Debug.Log(lookingDirection);
+        if (lookingDirection == Looking.RIGHT & other.transform.position.x > 0 | lookingDirection == Looking.LEFT & other.transform.position.x < 0){
+            if (other.tag == "enemy"){
 
-            en = other.gameObject;
-            el = en.GetComponent<enemyLife>();
+                en = other.gameObject;
+                el = en.GetComponent<enemyLife>();
 
-            if ( msk == true ) {
-                gesture=GESTURETYPE.MASK;
-            }
-            if ( quietStatus == true ) {
-                gesture = GESTURETYPE.QUIET;
-            }
-            if ( leaveStatus == true ) {
-                gesture = GESTURETYPE.DISTANCE;
-            }
+                if ( msk == true ) {
+                    gesture=GESTURETYPE.MASK;
+                }
+                if ( quietStatus == true ) {
+                    gesture = GESTURETYPE.QUIET;
+                }
+                if ( leaveStatus == true ) {
+                    gesture = GESTURETYPE.DISTANCE;
+                }
 
-            if (el.Warn(gesture) == true){
-                gl.score+=1;
+                if (el.Warn(gesture) == true){
+                    gl.score+=1;
+                }
             }
         }
     }
