@@ -260,13 +260,13 @@ public class playerStatus : MonoBehaviour
         }else{
             leftExtend=false;
         }
-        if(rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
+        if(rightisThumbStraight && rightisIndexStraight && !rightisMiddleStraight && !rightisRingStraight && !rightisPinkyStraight){
             rightExtend=true;
         }else{
             rightExtend=false;
         }
 
-        if (leftExtend==true & rightExtend ==true){
+        if (leftExtend==true && rightExtend ==true){
             extend=true;
         }else{
             extend=false;
@@ -289,7 +289,7 @@ public class playerStatus : MonoBehaviour
 
 
 
-        if (0.8 >leftFingerAngle & 0.8 > rightFingerAngle ){
+        if (0.8 >leftFingerAngle && 0.8 > rightFingerAngle ){
             fingerAngle=true;
         }else{
             fingerAngle=false;
@@ -300,8 +300,8 @@ public class playerStatus : MonoBehaviour
 
 
         //片方の手がもう片方のなかにいる
-        if (leftIndexHorizontal==true & leftThumbTip.y>leftIndexTip.y ||leftIndexVertical==true & leftIndexTip.y > leftThumbTip.y ){
-            if(rightThumb2.x>leftThumb2.x & rightThumb2.y > leftThumb2.y){
+        if (leftIndexHorizontal==true && leftThumbTip.y>leftIndexTip.y ||leftIndexVertical==true && leftIndexTip.y > leftThumbTip.y ){
+            if(rightThumb2.x>leftThumb2.x && rightThumb2.y > leftThumb2.y){
                 leftpattern1=true;
             }else{
                 leftpattern1=false;
@@ -310,8 +310,8 @@ public class playerStatus : MonoBehaviour
             leftpattern1=false;
         }
 
-        if (rightIndexHorizontal==true & rightIndexTip.y > rightThumbTip.y || rightIndexVertical==true & rightThumbTip.y>rightIndexTip.y){
-            if(rightThumb2.x > leftThumb2.x & rightThumb2.y > leftThumb2.y){
+        if (rightIndexHorizontal==true && rightIndexTip.y > rightThumbTip.y || rightIndexVertical==true && rightThumbTip.y>rightIndexTip.y){
+            if(rightThumb2.x > leftThumb2.x && rightThumb2.y > leftThumb2.y){
                 rightpattern1=true;
             }else{
                 rightpattern1=false;
@@ -320,8 +320,8 @@ public class playerStatus : MonoBehaviour
             rightpattern1=false;
         }
 
-        if(leftIndexHorizontal==true & leftIndexTip.y > leftThumbTip.y || leftIndexVertical==true & leftThumbTip.y > leftIndexTip.y){
-            if (rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
+        if(leftIndexHorizontal==true && leftIndexTip.y > leftThumbTip.y || leftIndexVertical==true && leftThumbTip.y > leftIndexTip.y){
+            if (rightThumb2.x > leftThumb2.x && leftThumb2.y > rightThumb2.y){
                 leftpattern2=true;
             }else{
                 leftpattern2=false;
@@ -330,8 +330,8 @@ public class playerStatus : MonoBehaviour
             leftpattern2=false;
         }
 
-        if(rightIndexHorizontal==true & rightThumbTip.y > rightIndexTip.y || rightIndexVertical==true & rightIndexTip.y > rightThumbTip.y){
-            if(rightThumb2.x > leftThumb2.x & leftThumb2.y > rightThumb2.y){
+        if(rightIndexHorizontal==true && rightThumbTip.y > rightIndexTip.y || rightIndexVertical==true && rightIndexTip.y > rightThumbTip.y){
+            if(rightThumb2.x > leftThumb2.x && leftThumb2.y > rightThumb2.y){
                 rightpattern2=true;
             }else{
                 rightpattern2=false;
@@ -340,12 +340,12 @@ public class playerStatus : MonoBehaviour
             rightpattern2=false;
         }
 
-        if(leftpattern1 == true & rightpattern1== true){
+        if(leftpattern1 == true && rightpattern1== true){
             pattern1=true;
         }else{
             pattern1=false;
         }
-        if(leftpattern2 == true & leftpattern2 == true){
+        if(leftpattern2 == true && leftpattern2 == true){
             pattern2=true;
         }else{
             pattern2=false;
@@ -365,7 +365,7 @@ public class playerStatus : MonoBehaviour
         //Debug.Log("xdistance"+xdistance);
         //Debug.Log("ydistance"+ydistance);
         //Debug.Log(xdistance/ydistance);
-        if (xdistance / ydistance > 1.5 & 3.5 > xdistance / ydistance){
+        if (xdistance / ydistance > 1.5 && 3.5 > xdistance / ydistance){
             if(0.3 > ydistance){
                 handDistance=true;
             }else{
@@ -379,7 +379,7 @@ public class playerStatus : MonoBehaviour
 
 
         //マスクができているか
-        if (extend==true & fingerAngle==true & pattern==true & handDistance==true & leftIndexTilt==true & leftThumbTilt==true & rightIndexTilt == true & rightThumbTilt == true){
+        if (extend==true && fingerAngle==true && pattern==true && handDistance==true && leftIndexTilt==true && leftThumbTilt==true && rightIndexTilt == true && rightThumbTilt == true){
             msk=true;
         }else{
             msk=false;
@@ -469,7 +469,7 @@ public class playerStatus : MonoBehaviour
             rightLeaveJudgment=false;
         }
 
-        if (leftLeaveJudgment == true & rightLeaveJudgment == true & leftIndexTip.y > leftThumbTip.y & rightIndexTip.y > rightThumbTip.y & 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
+        if (leftLeaveJudgment == true && rightLeaveJudgment == true && leftIndexTip.y > leftThumbTip.y && rightIndexTip.y > rightThumbTip.y && 1 > Mathf.Abs(leftThumb2.y-rightThumb2.y) ){
             leaveStatus=true;
         }else{
             leaveStatus=false;
@@ -487,13 +487,13 @@ public class playerStatus : MonoBehaviour
         var rightstatus=false;
 
         //指の曲げ伸ばしが正しいか
-        if (!isThumbStraight & isIndexStraight & !isMiddleStraight & !isRingStraight & !isPinkyStraight){
+        if (!isThumbStraight && isIndexStraight && !isMiddleStraight && !isRingStraight && !isPinkyStraight){
             leftstright=true;
         }else{
             leftstright=false;
         }
 
-        if(!rightisThumbStraight & rightisIndexStraight & !rightisMiddleStraight & !rightisRingStraight & !rightisPinkyStraight){
+        if(!rightisThumbStraight && rightisIndexStraight && !rightisMiddleStraight && !rightisRingStraight && !rightisPinkyStraight){
             rightstright = true;
         }else{
             rightstright = false;
@@ -501,25 +501,25 @@ public class playerStatus : MonoBehaviour
 
 
         //指の状態は正しいか
-        if (leftIndexTilt==true & leftIndexVertical==true){
+        if (leftIndexTilt==true && leftIndexVertical==true){
             leftstatus=true;
         }else{
             leftstatus=false;
         }
 
-        if (rightIndexTilt==true & rightIndexVertical==true){
+        if (rightIndexTilt==true && rightIndexVertical==true){
             rightstatus=true;
         }else{
             rightstatus=false;
         }
 
         //静かにしなさいジェスチャーがただしいかどうか
-        if (leftstright==true & leftstatus==true & leftThumb2.y > rightThumb2.y){
+        if (leftstright==true && leftstatus==true && leftThumb2.y > rightThumb2.y){
             leftQuietStatus=true;
         }else {
             leftQuietStatus=false;
         }
-        if (rightstright==true & rightstatus==true & rightThumb2.y > leftThumb2.y){
+        if (rightstright==true && rightstatus==true && rightThumb2.y > leftThumb2.y){
             rightQuietStatus=true;
         }else{
             rightQuietStatus = false;
@@ -552,7 +552,7 @@ public class playerStatus : MonoBehaviour
             }
         }
 
-        if (msk == true | leaveStatus == true){
+        if (msk == true || leaveStatus == true){
             if (leftThumb2.z > rightThumb2.z){
                 lookingDirection = Looking.RIGHT;
             } else {
@@ -568,7 +568,7 @@ public class playerStatus : MonoBehaviour
         GameObject en ;
         enemyLife el;
         Debug.Log(lookingDirection);
-        if (lookingDirection == Looking.RIGHT & other.transform.position.x > 0 | lookingDirection == Looking.LEFT & other.transform.position.x < 0){
+        if (lookingDirection == Looking.RIGHT && other.transform.position.x > 0 || lookingDirection == Looking.LEFT && other.transform.position.x < 0){
             if (other.tag == "enemy"){
 
                 en = other.gameObject;
