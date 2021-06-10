@@ -18,7 +18,7 @@ public class sound : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other){
         if(other.tag == "Player"){
-            //Debug.Log("player");
+            Debug.Log("player");
             audioSource.PlayOneShot(sound1);
         }
 

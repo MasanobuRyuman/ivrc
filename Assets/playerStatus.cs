@@ -77,6 +77,7 @@ public class playerStatus : MonoBehaviour
 
     GameObject gameloop;
     gameloop gl;
+    humanGenerate ge;
 
 
     enum Looking {
@@ -99,6 +100,7 @@ public class playerStatus : MonoBehaviour
         StartCoroutine("leave");
         gameloop = GameObject.Find("gameloop");
         gl = gameloop.GetComponent<gameloop>();
+        ge = gameloop.GetComponent<humanGenerate>();
         camera = GameObject.Find("OVRCameraRig");
     }
 
@@ -563,7 +565,6 @@ public class playerStatus : MonoBehaviour
 
 
     private void OnTriggerStay(Collider other){
-        Debug.Log("quietStatus"+quietStatus);
         GESTURETYPE gesture = GESTURETYPE.NONE;
         GameObject en ;
         enemyLife el;
